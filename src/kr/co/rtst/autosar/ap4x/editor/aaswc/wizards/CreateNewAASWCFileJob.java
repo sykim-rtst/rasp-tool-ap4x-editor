@@ -14,10 +14,12 @@ import gautosar.ggenericstructure.ginfrastructure.GAUTOSAR;
 
 public class CreateNewAASWCFileJob extends CreateNewAutosarFileJob /*CreateNewModelFileJob*/ /*CreateNewAutosarFileJob*/ {
 
+	private AdaptiveApplicationSWCTypeCreationModel aaswcModel;
+	
 	public CreateNewAASWCFileJob(String jobName, IFile autosarFile, AutosarReleaseDescriptor autosarRelease,
-			String initialARPackageName) {
+			String initialARPackageName, AdaptiveApplicationSWCTypeCreationModel aaswcModel) {
 		super(jobName, autosarFile, autosarRelease, initialARPackageName);
-		// TODO Auto-generated constructor stub
+		this.aaswcModel = aaswcModel;
 	}
 	
 	@Override
@@ -27,7 +29,7 @@ public class CreateNewAASWCFileJob extends CreateNewAutosarFileJob /*CreateNewMo
 		
 		ApplicationstructureFactoryImpl appfactory = new ApplicationstructureFactoryImpl();
     	AdaptiveApplicationSwComponentType aaswc = appfactory.createAdaptiveApplicationSwComponentType();
-    	aaswc.setShortName("TEST");
+    	aaswc.setShortName(aaswcModel.getShortName());
 		
     	((GAUTOSAR)object).gGetArPackages().get(0).gGetElements().add(aaswc);
     	

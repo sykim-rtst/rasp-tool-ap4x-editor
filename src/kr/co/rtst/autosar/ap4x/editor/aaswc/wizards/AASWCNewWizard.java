@@ -6,6 +6,7 @@ import org.artop.aal.workspace.ui.wizards.BasicAutosarFileWizard;
 import org.artop.aal.workspace.ui.wizards.pages.NewAutosarFileCreationPage;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.sphinx.emf.workspace.ui.wizards.pages.NewModelFileCreationPage;
 import org.eclipse.ui.INewWizard;
 
 /**
@@ -31,9 +32,15 @@ public class AASWCNewWizard extends BasicAutosarFileWizard implements INewWizard
 	}
 	
 	@Override
+	protected NewModelFileCreationPage<AutosarReleaseDescriptor> createMainPage() {
+//		return super.createMainPage();
+		return new NewAASWCFileCreationPage("NewAutosarFileCreationPage", selection);
+	}
+	
+	@Override
 	protected Job createCreateNewModelFileJob(String jobName, IFile file) {
 		// TODO Auto-generated method stub
-		return new CreateNewAASWCFileJob(jobName, file, (AutosarReleaseDescriptor)IAutosarWorkspacePreferences.AUTOSAR_RELEASE.get(file.getProject()), ((NewAutosarFileCreationPage)mainPage).getInitialARPackageName());
+		return new CreateNewAASWCFileJob(jobName, file, (AutosarReleaseDescriptor)IAutosarWorkspacePreferences.AUTOSAR_RELEASE.get(file.getProject()), ((NewAASWCFileCreationPage)mainPage).getInitialARPackageName(), ((NewAASWCFileCreationPage)mainPage).getAaswcModel());
 //		return super.createCreateNewModelFileJob(jobName, file);
 	}
 	
