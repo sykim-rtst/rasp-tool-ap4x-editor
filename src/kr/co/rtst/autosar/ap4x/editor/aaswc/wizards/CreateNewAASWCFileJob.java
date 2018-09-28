@@ -4,6 +4,8 @@ import org.artop.aal.common.metamodel.AutosarReleaseDescriptor;
 import org.artop.aal.gautosar.services.factories.IGAutosarFactoryService;
 import org.artop.aal.workspace.jobs.CreateNewAutosarFileJob;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sphinx.emf.metamodel.services.DefaultMetaModelServiceProvider;
 
@@ -11,15 +13,19 @@ import autosar40.adaptiveplatform.applicationdesign.applicationstructure.Adaptiv
 import autosar40.adaptiveplatform.applicationdesign.applicationstructure.impl.ApplicationstructureFactoryImpl;
 import gautosar.ggenericstructure.ginfrastructure.GARPackage;
 import gautosar.ggenericstructure.ginfrastructure.GAUTOSAR;
+import kr.co.rtst.autosar.ap4x.core.artop.AutosarCoreModelRegistry;
+import kr.co.rtst.autosar.ap4x.core.util.AdaptiveAutosarProjectUtil;
 
 public class CreateNewAASWCFileJob extends CreateNewAutosarFileJob /*CreateNewModelFileJob*/ /*CreateNewAutosarFileJob*/ {
 
 	private AdaptiveApplicationSWCTypeCreationModel aaswcModel;
+	private IFile autosarFile;
 	
 	public CreateNewAASWCFileJob(String jobName, IFile autosarFile, AutosarReleaseDescriptor autosarRelease,
 			String initialARPackageName, AdaptiveApplicationSWCTypeCreationModel aaswcModel) {
 		super(jobName, autosarFile, autosarRelease, initialARPackageName);
 		this.aaswcModel = aaswcModel;
+		this.autosarFile = autosarFile;
 	}
 	
 	@Override
@@ -33,6 +39,7 @@ public class CreateNewAASWCFileJob extends CreateNewAutosarFileJob /*CreateNewMo
 		
     	((GAUTOSAR)object).gGetArPackages().get(0).gGetElements().add(aaswc);
     	
+    	AutosarCoreModelRegistry.getInstance().putCoreModel(autosarFile, ((GAUTOSAR)object));
 		return object;
 	}
 
