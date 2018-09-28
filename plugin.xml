@@ -5,12 +5,16 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            id="kr.co.rtst.autosar.ap45.editor.editors.aaswc.AASWCEditor"
-            name="Adaptive Application SWC Type Editor"
-            icon="icons/sample.png"
-            extensions="aaswc"
             class="kr.co.rtst.autosar.ap4x.editor.editors.aaswc.AASWCEditor"
-            contributorClass="kr.co.rtst.autosar.ap4x.editor.editors.aaswc.AASWCEditorContributor">
+            contributorClass="kr.co.rtst.autosar.ap4x.editor.editors.aaswc.AASWCEditorContributor"
+            default="true"
+            extensions="Identifiable"
+            icon="icons/sample.png"
+            id="kr.co.rtst.autosar.ap45.editor.editors.aaswc.AASWCEditor"
+            name="Adaptive Application SWC Type Editor">
+         <contentTypeBinding
+               contentTypeId="kr.co.rtst.autosar.ap4x.core.contenttype.aaswcFile">
+         </contentTypeBinding>
       </editor>
    </extension>
    <extension

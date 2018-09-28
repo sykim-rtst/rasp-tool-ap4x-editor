@@ -1,6 +1,10 @@
 package kr.co.rtst.autosar.ap4x.editor.aaswc.wizards;
 
+import java.util.Collection;
+
 import org.artop.aal.workspace.ui.wizards.pages.NewAutosarFileCreationPage;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -21,15 +25,22 @@ public class NewAASWCFileCreationPage extends NewAutosarFileCreationPage {
 		aaswcModel = new AdaptiveApplicationSWCTypeCreationModel();
 	}
 	
-	@Override
-	protected String getDefaultBaseName() {
-		return super.getDefaultBaseName();
-	}
-	
-	@Override
-	protected String getDefaultFileExtension() {
-		return "aaswc";
-	}
+//	@Override
+//	protected String getDefaultBaseName() {
+//		return super.getDefaultBaseName();
+//	}
+//	
+//	@Override
+//	protected String getDefaultFileExtension() {
+//		return "aaswc";
+//	}
+//	
+//	@Override
+//	protected Collection<String> getValidFileExtensions() {
+//		// TODO Auto-generated method stub
+//		Collection<String> original = super.getValidFileExtensions();
+//		return original;
+//	}
 	
 	@Override
 	protected void createAdditionalControls(Composite parent) {
@@ -61,6 +72,43 @@ public class NewAASWCFileCreationPage extends NewAutosarFileCreationPage {
 				aaswcModel.setShortName(txtShortName.getText());
 			}
 		});
+    }
+	
+	@Override
+	protected String getContentTypeId() {
+//		return super.getContentTypeId();
+		return "kr.co.rtst.autosar.ap4x.core.contenttype.aaswcFile";
+	}
+	
+	@Override
+	protected boolean validatePage() {
+        if(!super.validatePage())
+            return false;
+        IProject containerProject = getContainerProject();
+        if(containerProject != null && !hasRequiredProjectNature(containerProject))
+        {
+            setErrorMessage(getRequiredProjectNatureErrorMessage());
+            return false;
+        }
+        if(containerProject != null && !hasMatchingMetaModelVersion(containerProject))
+        {
+            setErrorMessage(getMatchingMetaModelVersionErrorMessage());
+            return false;
+        }
+        String fileExtension = (new Path(getFileName())).getFileExtension();
+        Collection validFileExtensions = getValidFileExtensions();
+        System.out.println("TYPE:"+getContentTypeId()); 
+        validFileExtensions.stream().forEach(e->{
+        	System.out.println(":::::::"+e);
+        });
+        if(!validFileExtensions.isEmpty() && !validFileExtensions.contains(fileExtension))
+        {
+            setErrorMessage(getFileExtensionErrorMessage(validFileExtensions));
+            return false;
+        } 
+        else {
+            return true;
+        }
     }
 
 }
